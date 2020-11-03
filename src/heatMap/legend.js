@@ -10,7 +10,6 @@ export default function legend(data, svg, width) {
 
   const extent = d3.extent([...data.values()]);
   const defs = svg.append('defs');
-  console.log(extent);
 
   const legendGroup = svg
     .append('g')

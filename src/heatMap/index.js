@@ -5,17 +5,17 @@ import legend from './legend';
 function responsivefy(svg) {
   // container will be the DOM element the svg is appended to
   // we then measure the container and find its aspect ratio
-  const container = d3.select(svg.node().parentNode),
-    width = parseInt(svg.style('width'), 10),
-    height = parseInt(svg.style('height'), 10),
-    aspect = width / height;
+  const container = d3.select(svg.node().parentNode);
+  const width = parseInt(svg.style('width'), 10);
+  const height = parseInt(svg.style('height'), 10);
+  const aspect = width / height;
 
   svg
     .attr('viewBox', `0 0 ${width} ${height}`)
     .attr('preserveAspectRatio', 'xMinYMid')
     .call(resize);
 
-  d3.select(window).on('resize.' + container.attr('id'), resize);
+  d3.select(window).on(`resize.${container.attr('id')}`, resize);
 
   function resize() {
     const targetWidth = parseInt(container.style('width'));
@@ -28,8 +28,6 @@ export default function HeatMap(data) {
   const margin = { top: 25, right: 10, bottom: 50, left: 10 };
   let width = 0;
   let height = 0;
-  let y;
-  let x;
 
   const screenWidth = document.querySelector('#map').clientWidth;
   const chartHeight = screenWidth / 2;
@@ -49,6 +47,7 @@ export default function HeatMap(data) {
     [...data.values()],
     d3.interpolateRdPu
   );
+
   const svg = d3
     .select('#map')
     .append('svg')
@@ -63,7 +62,6 @@ export default function HeatMap(data) {
   d3.json(
     'https://cdn.jsdelivr.net/npm/us-atlas@3.0.0/counties-albers-10m.json'
   ).then(function (us) {
-    console.log(us);
     g.selectAll('path')
       .data(topojson.feature(us, us.objects.counties).features)
       .enter()
